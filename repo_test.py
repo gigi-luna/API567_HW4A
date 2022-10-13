@@ -1,19 +1,18 @@
 import unittest
+from unittest import mock
+import pytest
 
 from repo import user_info
 
 
 class testrepo(unittest.TestCase):
-    def test_res(self):
-        expected = ['User: ',
-                    'Repo:', 'Number of commits:']
 
-        self.assertEqual(user_info(), expected)
-
-    def test_error_user(self):
-        self.assertEqual(user_info)('zyx123'),  'error in user/repo'
-        self.assertEqual(user_info(''), 'error in user/repo')
+    @unittest.mock.patch('requests.get')
+    def test_rep_1(self, mockedReq):
+        mockedReq.return_value.json.return_value = [{"name": 'user'}]
+        self.assertEqual(user_info())
 
 
 if __name__ == '__main__':
+    print('running unit test')
     unittest.main()
